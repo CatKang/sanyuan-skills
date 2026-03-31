@@ -22,12 +22,30 @@ Perform a structured review of the current git changes with focus on SOLID, arch
 
 ### 1) Preflight context
 
-- Use `git status -sb`, `git diff --stat`, and `git diff` to scope changes.
-- If needed, use `rg` or `grep` to find related modules, usages, and contracts.
-- Identify entry points, ownership boundaries, and critical paths (auth, payments, data writes, network).
+**Default**: Review uncommitted changes.
+
+```bash
+git status -sb
+git diff --stat
+git diff
+```
+
+**Branch review**: When user asks "review this branch" or "review vs master".
+
+```bash
+# Get current branch
+git branch --show-current
+
+# Diff against master/main
+git diff master...HEAD --stat
+git diff master...HEAD
+```
+
+If needed, use `rg` or `grep` to find related modules, usages, and contracts.
+Identify entry points, ownership boundaries, and critical paths (auth, payments, data writes, network).
 
 **Edge cases:**
-- **No changes**: If `git diff` is empty, inform user and ask if they want to review staged changes or a specific commit range.
+- **No changes**: If diff is empty, inform user and ask if they want to review staged changes or a specific commit range.
 - **Large diff (>500 lines)**: Summarize by file first, then review in batches by module/feature area.
 - **Mixed concerns**: Group findings by logical feature, not just file order.
 
